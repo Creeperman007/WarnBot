@@ -1,0 +1,5 @@
+configuration: Release
+cache:
+  - packages -> source/WarnBot/packages.config
+before_build:
+  - cmd: nuget restore source/WarnBot/packages.config -PackagesDirectory source/packages/
