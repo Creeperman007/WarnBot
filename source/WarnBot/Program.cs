@@ -65,6 +65,7 @@ namespace WarnBot
                         case "/warn":
                             try
                             {
+                                if (DBConnector.PermCheck(msg.Author.Id, chnl.Guild.Id)[0] >= 1 || msg.Author.Id == chnl.Guild.Owner.Id)
                                 DBConnector.Prepare(user, chnl.Guild.Id);
                                 int count = DBConnector.WarnCount(user, chnl.Guild.Id) + 1;
                                 if (count > 3)
@@ -88,7 +89,7 @@ namespace WarnBot
                         case "/kick":
                             try
                             {
-                                if (DBConnector.PermCheck(msg.Author.Id, chnl.Guild.Id)[0] >= 1)
+                                if (DBConnector.PermCheck(msg.Author.Id, chnl.Guild.Id)[0] >= 1 || msg.Author.Id == chnl.Guild.Owner.Id)
                                 {
                                     DBConnector.Prepare(user, chnl.Guild.Id);
                                     int[] info = DBConnector.Info(user, chnl.Guild.Id);
@@ -138,7 +139,7 @@ namespace WarnBot
                         case "/ban":
                             try
                             {
-                                if (DBConnector.PermCheck(msg.Author.Id, chnl.Guild.Id)[1] >= 1)
+                                if (DBConnector.PermCheck(msg.Author.Id, chnl.Guild.Id)[1] >= 1 || msg.Author.Id == chnl.Guild.Owner.Id)
                                 {
                                     if (context != "")
                                     {
