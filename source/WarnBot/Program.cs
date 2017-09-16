@@ -149,7 +149,8 @@ namespace WarnBot
                                 {
                                     if (context != "")
                                     {
-                                        if ((DBConnector.Info(user, chnl.Guild.Id)[1] % 5) == 0)
+                                        int kick = DBConnector.Info(user, chnl.Guild.Id)[1];
+                                        if (kick != 0 && (kick % 5) == 0)
                                         {
                                             await chnl.Guild.AddBanAsync(Convert.ToUInt64(usr2ulong), 0, context);
                                             await msg.Channel.SendMessageAsync("Banned " + user + " for \"" + context + "\"");
