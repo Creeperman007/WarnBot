@@ -66,17 +66,23 @@ namespace WarnBot
                             try
                             {
                                 if (DBConnector.PermCheck(msg.Author.Id, chnl.Guild.Id)[0] >= 1 || msg.Author.Id == chnl.Guild.Owner.Id)
-                                DBConnector.Prepare(user, chnl.Guild.Id);
-                                int count = DBConnector.WarnCount(user, chnl.Guild.Id) + 1;
-                                if (count > 3)
                                 {
-                                    count = 1;
+                                    DBConnector.Prepare(user, chnl.Guild.Id);
+                                    int count = DBConnector.WarnCount(user, chnl.Guild.Id) + 1;
+                                    if (count > 3)
+                                    {
+                                        count = 1;
+                                    }
+                                    DBConnector.Warn(user, chnl.Guild.Id, count);
+                                    await msg.Channel.SendMessageAsync("Warned: " + user + "\nReason: " + context + "\nWarning " + count + "/3");
+                                    if (count == 3)
+                                    {
+                                        await msg.Channel.SendMessageAsync("User now can be kicked!");
+                                    }
                                 }
-                                DBConnector.Warn(user, chnl.Guild.Id, count);
-                                await msg.Channel.SendMessageAsync("Warned: " + user + "\nReason: " + context + "\nWarning " + count + "/3");
-                                if (count == 3)
+                                else
                                 {
-                                    await msg.Channel.SendMessageAsync("User now can be kicked!");
+                                    await msg.Channel.SendMessageAsync(msg.Author.Mention + " you don't have permission for this action");
                                 }
                             }
                             catch (Exception e)
@@ -159,7 +165,9 @@ namespace WarnBot
                                     }
                                 }
                                 else
+                                {
                                     await msg.Channel.SendMessageAsync(msg.Author.Mention + " you don't have permission for this action");
+                                }
                             }
                             catch (Exception e)
                             {
@@ -172,8 +180,15 @@ namespace WarnBot
                         case "/clear":
                             try
                             {
-                                DBConnector.Clear(user, chnl.Guild.Id);
-                                await msg.Channel.SendMessageAsync("Cleared record for " + user);
+                                if (DBConnector.PermCheck(msg.Author.Id, chnl.Guild.Id)[1] >= 1 || msg.Author.Id == chnl.Guild.Owner.Id)
+                                {
+                                    DBConnector.Clear(user, chnl.Guild.Id);
+                                    await msg.Channel.SendMessageAsync("Cleared record for " + user);
+                                }
+                                else
+                                {
+                                    await msg.Channel.SendMessageAsync(msg.Author.Mention + " you don't have permission for this action");
+                                }
                             }
                             catch (Exception e)
                             {
