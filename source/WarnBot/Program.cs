@@ -55,11 +55,6 @@ namespace WarnBot
                     }
                     catch { }
                     var chnl = msg.Channel as SocketGuildChannel;
-                    /*Console.WriteLine(chnl.Guild.Id);
-                    var echo = chnl.Guild.Owner.Id;
-                    Console.WriteLine(msg.MentionedUsers.ToString());
-                    var client = new DiscordSocketClient();*/
-                    //var role = (msg.Author as IGuildUser).Guild.Roles.FirstOrDefault(x => x.Name == "Role");
                     switch (cmd)
                     {
                         case "/warn":
@@ -87,9 +82,8 @@ namespace WarnBot
                             }
                             catch (Exception e)
                             {
-                                await msg.Channel.SendMessageAsync("Internal error occured. Cannot warn user!");
-                                await msg.Author.SendMessageAsync("Go to <https://github.com/Creeperman007/WarnBot/issues> open new issue and paste text below");
-                                await msg.Author.SendMessageAsync("```" + e + "```");
+                                await msg.Channel.SendMessageAsync("Cannot warn user!");
+                                ErrorCatch(msg, e);
                             }
                             break;
                         case "/kick":
@@ -103,20 +97,9 @@ namespace WarnBot
                                     {
                                         if (context != "")
                                         {
-                                            try
-                                            {
-                                                await chnl.GetUser(Convert.ToUInt64(usr2ulong)).KickAsync(context);
-                                                DBConnector.Kick(user, chnl.Guild.Id, context);
-                                                await msg.Channel.SendMessageAsync("Kicked " + user + " for \"" + context + "\"");
-                                            }
-                                            catch (Exception e)
-                                            {
-
-                                                Console.WriteLine(e);
-                                                await msg.Channel.SendMessageAsync("Could not kick user :confused:");
-                                                await msg.Author.SendMessageAsync("Go to <https://github.com/Creeperman007/WarnBot/issues> open new issue and paste text below");
-                                                await msg.Author.SendMessageAsync("```" + e + "```");
-                                            }
+                                            await chnl.GetUser(Convert.ToUInt64(usr2ulong)).KickAsync(context);
+                                            DBConnector.Kick(user, chnl.Guild.Id, context);
+                                            await msg.Channel.SendMessageAsync("Kicked " + user + " for \"" + context + "\"");
                                         }
                                         else
                                         {
@@ -135,11 +118,8 @@ namespace WarnBot
                             }
                             catch (Exception e)
                             {
-
-                                Console.WriteLine(e);
-                                await msg.Channel.SendMessageAsync("Internal error occured. Cannot kick user!");
-                                await msg.Author.SendMessageAsync("Go to <https://github.com/Creeperman007/WarnBot/issues> open new issue and paste text below");
-                                await msg.Author.SendMessageAsync("```" + e + "```");
+                                await msg.Channel.SendMessageAsync("Cannot kick user!");
+                                ErrorCatch(msg, e);
                             }
                             break;
                         case "/ban":
@@ -172,10 +152,8 @@ namespace WarnBot
                             }
                             catch (Exception e)
                             {
-                                Console.WriteLine(e);
-                                await msg.Channel.SendMessageAsync("Internal error occured. Cannot ban user!");
-                                await msg.Author.SendMessageAsync("Go to <https://github.com/Creeperman007/WarnBot/issues> open new issue and paste text below");
-                                await msg.Author.SendMessageAsync("```" + e + "```");
+                                await msg.Channel.SendMessageAsync("Cannot ban user!");
+                                ErrorCatch(msg, e);
                             }
                             break;
                         case "/clear":
@@ -193,9 +171,8 @@ namespace WarnBot
                             }
                             catch (Exception e)
                             {
-                                await msg.Channel.SendMessageAsync("Internal error occured. Cannot clear user!");
-                                await msg.Author.SendMessageAsync("Go to <https://github.com/Creeperman007/WarnBot/issues> open new issue and paste text below");
-                                await msg.Author.SendMessageAsync("```" + e + "```");
+                                await msg.Channel.SendMessageAsync("Cannot clear record for user!");
+                                ErrorCatch(msg, e);
                             }
                             break;
                         case "/info":
@@ -207,9 +184,8 @@ namespace WarnBot
                             }
                             catch (Exception e)
                             {
-                                await msg.Channel.SendMessageAsync("Internal error occured. Cannot clear user!");
-                                await msg.Author.SendMessageAsync("Go to <https://github.com/Creeperman007/WarnBot/issues> open new issue and paste text below");
-                                await msg.Author.SendMessageAsync("```" + e + "```");
+                                await msg.Channel.SendMessageAsync("Cannot retreive info about user!");
+                                ErrorCatch(msg, e);
                             }
                             break;
                         case "/help":
@@ -230,9 +206,8 @@ namespace WarnBot
                             }
                             catch (Exception e)
                             {
-                                await msg.Channel.SendMessageAsync("Internal error occured. Cannot clear user!");
-                                await msg.Author.SendMessageAsync("Go to <https://github.com/Creeperman007/WarnBot/issues> open new issue and paste text below");
-                                await msg.Author.SendMessageAsync("```" + e + "```");
+                                await msg.Channel.SendMessageAsync("Cannot add user to Admins!");
+                                ErrorCatch(msg, e);
                             }
                             break;
                         case "/rmusr":
@@ -250,9 +225,8 @@ namespace WarnBot
                             }
                             catch (Exception e)
                             {
-                                await msg.Channel.SendMessageAsync("Internal error occured. Cannot clear user!");
-                                await msg.Author.SendMessageAsync("Go to <https://github.com/Creeperman007/WarnBot/issues> open new issue and paste text below");
-                                await msg.Author.SendMessageAsync("```" + e + "```");
+                                await msg.Channel.SendMessageAsync("Cannot remove user from Admins!");
+                                ErrorCatch(msg, e);
                             }
                             break;
                         case "/updateusr":
@@ -270,9 +244,8 @@ namespace WarnBot
                             }
                             catch (Exception e)
                             {
-                                await msg.Channel.SendMessageAsync("Internal error occured. Cannot clear user!");
-                                await msg.Author.SendMessageAsync("Go to <https://github.com/Creeperman007/WarnBot/issues> open new issue and paste text below");
-                                await msg.Author.SendMessageAsync("```" + e + "```");
+                                await msg.Channel.SendMessageAsync("Cannot update permissions!");
+                                ErrorCatch(msg, e);
                             }
                             break;
                         case "/about":
@@ -295,6 +268,13 @@ namespace WarnBot
         {
             Console.WriteLine(msg);
             return Task.CompletedTask;
+        }
+        private async void ErrorCatch(SocketMessage msg, Exception e)
+        {
+            Console.WriteLine(e);
+            await msg.Channel.SendMessageAsync("Internal error occured!");
+            await msg.Author.SendMessageAsync("Go to <https://github.com/Creeperman007/WarnBot/issues> open new issue and paste text below");
+            await msg.Author.SendMessageAsync("```" + e + "```");
         }
     }
 }
