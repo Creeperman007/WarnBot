@@ -189,7 +189,7 @@ namespace WarnBot
                             }
                             break;
                         case "/help":
-                            await msg.Channel.SendMessageAsync("```Everyone:\n/info <user>......................Shows warnings and kicks\n\nAdmins:\n/ban <user> <reason>..............Bans person\n/clear <user>.....................Clears warning count\n/kick <user> <reason>.............Kicks person\n/warn <user> <reason[optional]>...Give person warning\n\nOwner:\n/addusr <user> <K|KB>.............Adds user to Admins\n/rmusr <user> <K|KB>..............Remove user from Admins\n/updateusr <user> <K|KB> .........Updates permissions for user\n..................................K=Kick, KB=Kick and Ban```");
+                            await msg.Channel.SendMessageAsync("```Everyone:\n/about............................About this bot\n/info <user>......................Shows warnings and kicks\n\nAdmins:\n/ban <user> <reason>..............Bans person\n/clear <user>.....................Clears warning count\n/kick <user> <reason>.............Kicks person\n/warn <user> <reason[optional]>...Give person warning\n\nOwner:\n/addusr <user> <K|KB>.............Adds user to Admins\n/rmusr <user> <K|KB>..............Remove user from Admins\n/updateusr <user> <K|KB> .........Updates permissions for user\n..................................K=Kick, KB=Kick and Ban```");
                             break;
                         case "/addusr":
                             try
