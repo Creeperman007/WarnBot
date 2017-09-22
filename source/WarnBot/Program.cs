@@ -194,14 +194,21 @@ namespace WarnBot
                         case "/addusr":
                             try
                             {
-                                if (msg.Author.Id == chnl.Guild.Owner.Id)
+                                if (user != "")
                                 {
-                                    DBConnector.AddUsr(Convert.ToUInt64(usr2ulong), chnl.Guild.Id, context);
-                                    await msg.Channel.SendMessageAsync("Added user to Admins.");
+                                    if (msg.Author.Id == chnl.Guild.Owner.Id)
+                                    {
+                                        DBConnector.AddUsr(Convert.ToUInt64(usr2ulong), chnl.Guild.Id, context);
+                                        await msg.Channel.SendMessageAsync("Added user to Admins.");
+                                    }
+                                    else
+                                    {
+                                        await msg.Channel.SendMessageAsync(msg.Author.Mention + " you don't have permission for this action");
+                                    }
                                 }
                                 else
                                 {
-                                    await msg.Channel.SendMessageAsync(msg.Author.Mention + " you don't have permission for this action");
+                                    await msg.Channel.SendMessageAsync("You need to specify user when using this command!");
                                 }
                             }
                             catch (Exception e)
@@ -213,14 +220,21 @@ namespace WarnBot
                         case "/rmusr":
                             try
                             {
-                                if (msg.Author.Id == chnl.Guild.Owner.Id)
+                                if (user != "")
                                 {
-                                    DBConnector.RmUsr(Convert.ToUInt64(usr2ulong), chnl.Guild.Id);
-                                    await msg.Channel.SendMessageAsync("Removed user from Admins.");
+                                    if (msg.Author.Id == chnl.Guild.Owner.Id)
+                                    {
+                                        DBConnector.RmUsr(Convert.ToUInt64(usr2ulong), chnl.Guild.Id);
+                                        await msg.Channel.SendMessageAsync("Removed user from Admins.");
+                                    }
+                                    else
+                                    {
+                                        await msg.Channel.SendMessageAsync(msg.Author.Mention + " you don't have permission for this action");
+                                    }
                                 }
                                 else
                                 {
-                                    await msg.Channel.SendMessageAsync(msg.Author.Mention + " you don't have permission for this action");
+                                    await msg.Channel.SendMessageAsync("You need to specify user when using this command!");
                                 }
                             }
                             catch (Exception e)
@@ -232,14 +246,21 @@ namespace WarnBot
                         case "/updateusr":
                             try
                             {
-                                if (msg.Author.Id == chnl.Guild.Owner.Id)
+                                if (user != "")
                                 {
-                                    DBConnector.UpdateUsr(Convert.ToUInt64(usr2ulong), chnl.Guild.Id, context);
-                                    await msg.Channel.SendMessageAsync("Updated permissions for user.");
+                                    if (msg.Author.Id == chnl.Guild.Owner.Id)
+                                    {
+                                        DBConnector.UpdateUsr(Convert.ToUInt64(usr2ulong), chnl.Guild.Id, context);
+                                        await msg.Channel.SendMessageAsync("Updated permissions for user.");
+                                    }
+                                    else
+                                    {
+                                        await msg.Channel.SendMessageAsync(msg.Author.Mention + " you don't have permission for this action");
+                                    }
                                 }
                                 else
                                 {
-                                    await msg.Channel.SendMessageAsync(msg.Author.Mention + " you don't have permission for this action");
+                                    await msg.Channel.SendMessageAsync("You need to specify user when using this command!");
                                 }
                             }
                             catch (Exception e)
