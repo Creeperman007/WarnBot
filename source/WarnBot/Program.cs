@@ -275,6 +275,13 @@ namespace WarnBot
                                 await msg.Author.SendMessageAsync("```" + e + "```");
                             }
                             break;
+                        case "/about":
+                            var eb = new EmbedBuilder();
+                            eb.WithColor(Color.Red);
+                            eb.WithTitle("About");
+                            eb.WithDescription("Programmed by Creeperman007\nUsing Discord.Net library\nGitHub repository: <http://github.com/Creeperman007/WarnBot>");
+                            await msg.Channel.SendMessageAsync("", false, eb);
+                            break;
                     }
                 }
             }
