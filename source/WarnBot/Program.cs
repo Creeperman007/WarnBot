@@ -189,7 +189,7 @@ namespace WarnBot
                             }
                             break;
                         case "/help":
-                            await msg.Channel.SendMessageAsync("```Everyone:\n/about............................About this bot\n/info <user>......................Shows warnings and kicks\n\nAdmins:\n/ban <user> <reason>..............Bans person\n/clear <user>.....................Clears warning count\n/kick <user> <reason>.............Kicks person\n/warn <user> <reason[optional]>...Give person warning\n\nOwner:\n/addusr <user> <K|KB>.............Adds user to Admins\n/rmusr <user> <K|KB>..............Remove user from Admins\n/updateusr <user> <K|KB> .........Updates permissions for user\n..................................K=Kick, KB=Kick and Ban```");
+                            await msg.Channel.SendMessageAsync("```Everyone:\n/about............................About this bot\n/example </command>...............Shows example of specified command\n/info <user>......................Shows warnings and kicks\n\nAdmins:\n/ban <user> <reason>..............Bans person\n/clear <user>.....................Clears warning count\n/kick <user> <reason>.............Kicks person\n/warn <user> <reason[optional]>...Give person warning\n\nOwner:\n/addusr <user> <K|KB>.............Adds user to Admins\n/rmusr <user> <K|KB>..............Remove user from Admins\n/updateusr <user> <K|KB> .........Updates permissions for user\n..................................K=Kick, KB=Kick and Ban```");
                             break;
                         case "/addusr":
                             try
@@ -275,6 +275,41 @@ namespace WarnBot
                             eb.WithTitle("About");
                             eb.WithDescription("Programmed by Creeperman007\nUsing Discord.Net library\nGitHub repository: <http://github.com/Creeperman007/WarnBot>");
                             await msg.Channel.SendMessageAsync("", false, eb);
+                            break;
+                        case "/example":
+                            switch(user)
+                            {
+                                case "/ban":
+                                    await msg.Channel.SendMessageAsync("```/ban " + msg.Author.ToString() + " Spamming```");
+                                    break;
+                                case "/kick":
+                                    await msg.Channel.SendMessageAsync("```/kick " + msg.Author.ToString() + " Spamming```");
+                                    break;
+                                case "/warn":
+                                    await msg.Channel.SendMessageAsync("```/warn " + msg.Author.ToString() + " Spamming```");
+                                    break;
+                                case "/clear":
+                                    await msg.Channel.SendMessageAsync("```/clear " + msg.Author.ToString() + "```");
+                                    break;
+                                case "/info":
+                                    await msg.Channel.SendMessageAsync("```/info " + msg.Author.ToString() + "```");
+                                    break;
+                                case "/addusr":
+                                    await msg.Channel.SendMessageAsync("```/addusr " + msg.Author.ToString() + " K``` /\\ for kick only\nOR\n```/addusr " + msg.Author.ToString() + " KB``` /\\ for kick and ban");
+                                    break;
+                                case "/rmusr":
+                                    await msg.Channel.SendMessageAsync("```/rmusr " + msg.Author.ToString() + "```");
+                                    break;
+                                case "/updateusr":
+                                    await msg.Channel.SendMessageAsync("```/updateusr " + msg.Author.ToString() + " K``` /\\ for kick only\nOR\n```/updateusr " + msg.Author.ToString() + " KB``` /\\ for kick and ban");
+                                    break;
+                                case "/example":
+                                    await msg.Channel.SendMessageAsync("```/example </command>```");
+                                    break;
+                                default:
+                                    await msg.Channel.SendMessageAsync("This is not existing command, or it does not need any arguments :confused:");
+                                    break;
+                            }
                             break;
                     }
                 }
