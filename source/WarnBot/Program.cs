@@ -280,31 +280,31 @@ namespace WarnBot
                             switch(user)
                             {
                                 case "/ban":
-                                    await msg.Channel.SendMessageAsync("```/ban " + msg.Author.ToString() + " Spamming```");
+                                    await msg.Channel.SendMessageAsync("```/ban @" + msg.Author.ToString() + " Spamming```");
                                     break;
                                 case "/kick":
-                                    await msg.Channel.SendMessageAsync("```/kick " + msg.Author.ToString() + " Spamming```");
+                                    await msg.Channel.SendMessageAsync("```/kick @" + msg.Author.ToString() + " Spamming```");
                                     break;
                                 case "/warn":
-                                    await msg.Channel.SendMessageAsync("```/warn " + msg.Author.ToString() + " Spamming```");
+                                    await msg.Channel.SendMessageAsync("```/warn @" + msg.Author.ToString() + " Spamming```");
                                     break;
                                 case "/clear":
-                                    await msg.Channel.SendMessageAsync("```/clear " + msg.Author.ToString() + "```");
+                                    await msg.Channel.SendMessageAsync("```/clear @" + msg.Author.ToString() + "```");
                                     break;
                                 case "/info":
-                                    await msg.Channel.SendMessageAsync("```/info " + msg.Author.ToString() + "```");
+                                    await msg.Channel.SendMessageAsync("```/info @" + msg.Author.ToString() + "```");
                                     break;
                                 case "/addusr":
-                                    await msg.Channel.SendMessageAsync("```/addusr " + msg.Author.ToString() + " K``` /\\ for kick only\nOR\n```/addusr " + msg.Author.ToString() + " KB``` /\\ for kick and ban");
+                                    await msg.Channel.SendMessageAsync("```/addusr @" + msg.Author.ToString() + " K``` /\\ for kick only\nOR\n```/addusr @" + msg.Author.ToString() + " KB``` /\\ for kick and ban");
                                     break;
                                 case "/rmusr":
-                                    await msg.Channel.SendMessageAsync("```/rmusr " + msg.Author.ToString() + "```");
+                                    await msg.Channel.SendMessageAsync("```/rmusr @" + msg.Author.ToString() + "```");
                                     break;
                                 case "/updateusr":
-                                    await msg.Channel.SendMessageAsync("```/updateusr " + msg.Author.ToString() + " K``` /\\ for kick only\nOR\n```/updateusr " + msg.Author.ToString() + " KB``` /\\ for kick and ban");
+                                    await msg.Channel.SendMessageAsync("```/updateusr @" + msg.Author.ToString() + " K``` /\\ for kick only\nOR\n```/updateusr @" + msg.Author.ToString() + " KB``` /\\ for kick and ban");
                                     break;
                                 case "/example":
-                                    await msg.Channel.SendMessageAsync("```/example </command>```");
+                                    await msg.Channel.SendMessageAsync("```/example /kick```");
                                     break;
                                 default:
                                     await msg.Channel.SendMessageAsync("This is not existing command, or it does not need any arguments :confused:");
