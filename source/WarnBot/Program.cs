@@ -60,7 +60,7 @@ namespace WarnBot
                         case "/warn":
                             try
                             {
-                                if (DBConnector.PermCheck(msg.Author.Id, chnl.Guild.Id)[0] >= 1 || msg.Author.Id == chnl.Guild.Owner.Id)
+                                if ((DBConnector.PermCheck(msg.Author.Id, chnl.Guild.Id)[0] >= 1 || msg.Author.Id == chnl.Guild.Owner.Id) && ulong.Parse(usr2ulong) != msg.Author.Id)
                                 {
                                     DBConnector.Prepare(user, chnl.Guild.Id);
                                     int count = DBConnector.WarnCount(user, chnl.Guild.Id) + 1;
@@ -89,7 +89,7 @@ namespace WarnBot
                         case "/kick":
                             try
                             {
-                                if (DBConnector.PermCheck(msg.Author.Id, chnl.Guild.Id)[0] >= 1 || msg.Author.Id == chnl.Guild.Owner.Id)
+                                if ((DBConnector.PermCheck(msg.Author.Id, chnl.Guild.Id)[0] >= 1 || msg.Author.Id == chnl.Guild.Owner.Id) && ulong.Parse(usr2ulong) != msg.Author.Id)
                                 {
                                     DBConnector.Prepare(user, chnl.Guild.Id);
                                     int[] info = DBConnector.Info(user, chnl.Guild.Id);
@@ -125,7 +125,7 @@ namespace WarnBot
                         case "/ban":
                             try
                             {
-                                if (DBConnector.PermCheck(msg.Author.Id, chnl.Guild.Id)[1] >= 1 || msg.Author.Id == chnl.Guild.Owner.Id)
+                                if ((DBConnector.PermCheck(msg.Author.Id, chnl.Guild.Id)[1] >= 1 || msg.Author.Id == chnl.Guild.Owner.Id) && ulong.Parse(usr2ulong) != msg.Author.Id)
                                 {
                                     if (context != "")
                                     {
@@ -158,8 +158,8 @@ namespace WarnBot
                             break;
                         case "/clear":
                             try
-                            {
-                                if (DBConnector.PermCheck(msg.Author.Id, chnl.Guild.Id)[1] >= 1 || msg.Author.Id == chnl.Guild.Owner.Id)
+                            { 
+                                if (DBConnector.PermCheck(msg.Author.Id, chnl.Guild.Id)[1] >= 1 || (msg.Author.Id == chnl.Guild.Owner.Id || ulong.Parse(usr2ulong) != msg.Author.Id))
                                 {
                                     DBConnector.Clear(user, chnl.Guild.Id);
                                     await msg.Channel.SendMessageAsync("Cleared record for " + user);
