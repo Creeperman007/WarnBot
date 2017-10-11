@@ -60,24 +60,31 @@ namespace WarnBot
                         case "/warn":
                             try
                             {
-                                if ((DBConnector.PermCheck(msg.Author.Id, chnl.Guild.Id)[0] >= 1 || msg.Author.Id == chnl.Guild.Owner.Id) && ulong.Parse(usr2ulong) != msg.Author.Id)
+                                if (user != "")
                                 {
-                                    DBConnector.Prepare(user, chnl.Guild.Id);
-                                    int count = DBConnector.WarnCount(user, chnl.Guild.Id) + 1;
-                                    if (count > 3)
+                                    if ((DBConnector.PermCheck(msg.Author.Id, chnl.Guild.Id)[0] >= 1 || msg.Author.Id == chnl.Guild.Owner.Id) && ulong.Parse(usr2ulong) != msg.Author.Id)
                                     {
-                                        count = 1;
+                                        DBConnector.Prepare(user, chnl.Guild.Id);
+                                        int count = DBConnector.WarnCount(user, chnl.Guild.Id) + 1;
+                                        if (count > 3)
+                                        {
+                                            count = 1;
+                                        }
+                                        DBConnector.Warn(user, chnl.Guild.Id, count);
+                                        await msg.Channel.SendMessageAsync("Warned: " + user + "\nReason: " + context + "\nWarning " + count + "/3");
+                                        if (count == 3)
+                                        {
+                                            await msg.Channel.SendMessageAsync("User now can be kicked!");
+                                        }
                                     }
-                                    DBConnector.Warn(user, chnl.Guild.Id, count);
-                                    await msg.Channel.SendMessageAsync("Warned: " + user + "\nReason: " + context + "\nWarning " + count + "/3");
-                                    if (count == 3)
+                                    else
                                     {
-                                        await msg.Channel.SendMessageAsync("User now can be kicked!");
+                                        await msg.Channel.SendMessageAsync(msg.Author.Mention + " you don't have permission for this action");
                                     }
                                 }
                                 else
                                 {
-                                    await msg.Channel.SendMessageAsync(msg.Author.Mention + " you don't have permission for this action");
+                                    await msg.Channel.SendMessageAsync("You need to specify user when using this command!");
                                 }
                             }
                             catch (Exception e)
@@ -89,26 +96,32 @@ namespace WarnBot
                         case "/kick":
                             try
                             {
-                                if ((DBConnector.PermCheck(msg.Author.Id, chnl.Guild.Id)[0] >= 1 || msg.Author.Id == chnl.Guild.Owner.Id) && ulong.Parse(usr2ulong) != msg.Author.Id)
-                                {
-                                    DBConnector.Prepare(user, chnl.Guild.Id);
-                                    int[] info = DBConnector.Info(user, chnl.Guild.Id);
-                                    if (info[0] == 3)
+                                if (user != "") {
+                                    if ((DBConnector.PermCheck(msg.Author.Id, chnl.Guild.Id)[0] >= 1 || msg.Author.Id == chnl.Guild.Owner.Id) && ulong.Parse(usr2ulong) != msg.Author.Id)
                                     {
-                                        if (context != "")
+                                        DBConnector.Prepare(user, chnl.Guild.Id);
+                                        int[] info = DBConnector.Info(user, chnl.Guild.Id);
+                                        if (info[0] == 3)
                                         {
-                                            await chnl.GetUser(Convert.ToUInt64(usr2ulong)).KickAsync(context);
-                                            DBConnector.Kick(user, chnl.Guild.Id, context);
-                                            await msg.Channel.SendMessageAsync("Kicked " + user + " for \"" + context + "\"");
+                                            if (context != "")
+                                            {
+                                                await chnl.GetUser(Convert.ToUInt64(usr2ulong)).KickAsync(context);
+                                                DBConnector.Kick(user, chnl.Guild.Id, context);
+                                                await msg.Channel.SendMessageAsync("Kicked " + user + " for \"" + context + "\"");
+                                            }
+                                            else
+                                            {
+                                                await msg.Channel.SendMessageAsync("You can't kick without a reason!");
+                                            }
                                         }
                                         else
                                         {
-                                            await msg.Channel.SendMessageAsync("You can't kick without a reason!");
+                                            await msg.Channel.SendMessageAsync("User does not have 3 warnings yet!");
                                         }
                                     }
                                     else
                                     {
-                                        await msg.Channel.SendMessageAsync("User does not have 3 warnings yet!");
+                                        await msg.Channel.SendMessageAsync("You need to specify user when using this command!");
                                     }
                                 }
                                 else
@@ -125,29 +138,36 @@ namespace WarnBot
                         case "/ban":
                             try
                             {
-                                if ((DBConnector.PermCheck(msg.Author.Id, chnl.Guild.Id)[1] >= 1 || msg.Author.Id == chnl.Guild.Owner.Id) && ulong.Parse(usr2ulong) != msg.Author.Id)
+                                if (user != "")
                                 {
-                                    if (context != "")
+                                    if ((DBConnector.PermCheck(msg.Author.Id, chnl.Guild.Id)[1] >= 1 || msg.Author.Id == chnl.Guild.Owner.Id) && ulong.Parse(usr2ulong) != msg.Author.Id)
                                     {
-                                        int kick = DBConnector.Info(user, chnl.Guild.Id)[1];
-                                        if (kick != 0 && (kick % 5) == 0)
+                                        if (context != "")
                                         {
-                                            await chnl.Guild.AddBanAsync(Convert.ToUInt64(usr2ulong), 0, context);
-                                            await msg.Channel.SendMessageAsync("Banned " + user + " for \"" + context + "\"");
+                                            int kick = DBConnector.Info(user, chnl.Guild.Id)[1];
+                                            if (kick != 0 && (kick % 5) == 0)
+                                            {
+                                                await chnl.Guild.AddBanAsync(Convert.ToUInt64(usr2ulong), 0, context);
+                                                await msg.Channel.SendMessageAsync("Banned " + user + " for \"" + context + "\"");
+                                            }
+                                            else
+                                            {
+                                                await msg.Channel.SendMessageAsync("User does not have number of kicks divisible by 5!");
+                                            }
                                         }
                                         else
                                         {
-                                            await msg.Channel.SendMessageAsync("User does not have number of kicks divisible by 5!");
+                                            await msg.Channel.SendMessageAsync("You can't ban without a reason!");
                                         }
                                     }
                                     else
                                     {
-                                        await msg.Channel.SendMessageAsync("You can't ban without a reason!");
+                                        await msg.Channel.SendMessageAsync(msg.Author.Mention + " you don't have permission for this action");
                                     }
                                 }
                                 else
                                 {
-                                    await msg.Channel.SendMessageAsync(msg.Author.Mention + " you don't have permission for this action");
+                                    await msg.Channel.SendMessageAsync("You need to specify user when using this command!");
                                 }
                             }
                             catch (Exception e)
@@ -158,15 +178,22 @@ namespace WarnBot
                             break;
                         case "/clear":
                             try
-                            { 
-                                if (DBConnector.PermCheck(msg.Author.Id, chnl.Guild.Id)[1] >= 1 || (msg.Author.Id == chnl.Guild.Owner.Id || ulong.Parse(usr2ulong) != msg.Author.Id))
+                            {
+                                if (user != "")
                                 {
-                                    DBConnector.Clear(user, chnl.Guild.Id);
-                                    await msg.Channel.SendMessageAsync("Cleared record for " + user);
+                                    if (DBConnector.PermCheck(msg.Author.Id, chnl.Guild.Id)[1] >= 1 || (msg.Author.Id == chnl.Guild.Owner.Id || ulong.Parse(usr2ulong) != msg.Author.Id))
+                                    {
+                                        DBConnector.Clear(user, chnl.Guild.Id);
+                                        await msg.Channel.SendMessageAsync("Cleared record for " + user);
+                                    }
+                                    else
+                                    {
+                                        await msg.Channel.SendMessageAsync(msg.Author.Mention + " you don't have permission for this action");
+                                    }
                                 }
                                 else
                                 {
-                                    await msg.Channel.SendMessageAsync(msg.Author.Mention + " you don't have permission for this action");
+                                    await msg.Channel.SendMessageAsync("You need to specify user when using this command!");
                                 }
                             }
                             catch (Exception e)
@@ -178,9 +205,16 @@ namespace WarnBot
                         case "/info":
                             try
                             {
-                                DBConnector.Prepare(user, chnl.Guild.Id);
-                                int[] info = DBConnector.Info(user, chnl.Guild.Id);
-                                await msg.Channel.SendMessageAsync("Warnings: " + info[0] + "\nKicks: " + info[1]);
+                                if (user != "")
+                                {
+                                    DBConnector.Prepare(user, chnl.Guild.Id);
+                                    int[] info = DBConnector.Info(user, chnl.Guild.Id);
+                                    await msg.Channel.SendMessageAsync("Warnings: " + info[0] + "\nKicks: " + info[1]);
+                                }
+                                else
+                                {
+                                    await msg.Channel.SendMessageAsync("You need to specify user when using this command!");
+                                }
                             }
                             catch (Exception e)
                             {
