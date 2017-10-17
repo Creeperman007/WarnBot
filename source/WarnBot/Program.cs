@@ -64,17 +64,24 @@ namespace WarnBot
                                 {
                                     if ((DBConnector.PermCheck(msg.Author.Id, chnl.Guild.Id)[0] >= 1 || msg.Author.Id == chnl.Guild.Owner.Id) && ulong.Parse(usr2ulong) != msg.Author.Id)
                                     {
-                                        DBConnector.Prepare(user, chnl.Guild.Id);
-                                        int count = DBConnector.WarnCount(user, chnl.Guild.Id) + 1;
-                                        if (count > 3)
+                                        if (context != "")
                                         {
-                                            count = 1;
+                                            DBConnector.Prepare(user, chnl.Guild.Id);
+                                            int count = DBConnector.WarnCount(user, chnl.Guild.Id) + 1;
+                                            if (count > 3)
+                                            {
+                                                count = 1;
+                                            }
+                                            DBConnector.Warn(user, chnl.Guild.Id, count);
+                                            await msg.Channel.SendMessageAsync("Warned: " + user + "\nReason: " + context + "\nWarning " + count + "/3");
+                                            if (count == 3)
+                                            {
+                                                await msg.Channel.SendMessageAsync("User now can be kicked!");
+                                            }
                                         }
-                                        DBConnector.Warn(user, chnl.Guild.Id, count);
-                                        await msg.Channel.SendMessageAsync("Warned: " + user + "\nReason: " + context + "\nWarning " + count + "/3");
-                                        if (count == 3)
+                                        else
                                         {
-                                            await msg.Channel.SendMessageAsync("User now can be kicked!");
+                                            await msg.Channel.SendMessageAsync("You can't ban without a reason!");
                                         }
                                     }
                                     else
@@ -147,6 +154,7 @@ namespace WarnBot
                                             int kick = DBConnector.Info(user, chnl.Guild.Id)[1];
                                             if (kick != 0 && (kick % 5) == 0)
                                             {
+                                                DBConnector.Ban(user, chnl.Guild.Id, context);
                                                 await chnl.Guild.AddBanAsync(Convert.ToUInt64(usr2ulong), 0, context);
                                                 await msg.Channel.SendMessageAsync("Banned " + user + " for \"" + context + "\"");
                                             }
@@ -223,7 +231,7 @@ namespace WarnBot
                             }
                             break;
                         case "/help":
-                            await msg.Channel.SendMessageAsync("```Everyone:\n/about............................About this bot\n/example </command>...............Shows example of specified command\n/info <user>......................Shows warnings and kicks\n\nAdmins:\n/ban <user> <reason>..............Bans person\n/clear <user>.....................Clears warning count\n/kick <user> <reason>.............Kicks person\n/warn <user> <reason[optional]>...Give person warning\n\nOwner:\n/addusr <user> <K|KB>.............Adds user to Admins\n/rmusr <user> <K|KB>..............Remove user from Admins\n/updateusr <user> <K|KB> .........Updates permissions for user\n..................................K=Kick, KB=Kick and Ban```");
+                            await msg.Channel.SendMessageAsync("```Everyone:\n/about............................About this bot\n/example </command>...............Shows example of specified command\n/info <user>......................Shows warnings and kicks\n\nAdmins:\n/ban <user> <reason>..............Bans person\n/clear <user>.....................Clears warning count\n/kick <user> <reason>.............Kicks person\n/warn <user> <reason>...Give person warning\n\nOwner:\n/addusr <user> <K|KB>.............Adds user to Admins\n/rmusr <user> <K|KB>..............Remove user from Admins\n/updateusr <user> <K|KB> .........Updates permissions for user\n..................................K=Kick, KB=Kick and Ban```");
                             break;
                         case "/addusr":
                             try

@@ -80,7 +80,23 @@ namespace WarnBot
             conn.Open();
             MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = conn;
-            cmd.CommandText = "UPDATE warnings SET kicks=kicks+1, reason=\"" + reason + "\" WHERE guild=" + guild + " AND user=@User";
+            cmd.CommandText = "UPDATE warnings SET kicks=kicks+1, kickReason=\"" + reason + "\" WHERE guild=" + guild + " AND user=@User";
+            cmd.Prepare();
+            cmd.Parameters.AddWithValue("@User", user);
+            cmd.ExecuteNonQuery();
+            if (conn != null)
+            {
+                conn.Close();
+            }
+        }
+        public static void Ban(string user, UInt64 guild, string reason)
+        {
+            MySqlConnection conn = null;
+            conn = new MySqlConnection(cs);
+            conn.Open();
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.Connection = conn;
+            cmd.CommandText = "UPDATE warnings SET banReason=\"" + reason + "\" WHERE guild=" + guild + " AND user=@User";
             cmd.Prepare();
             cmd.Parameters.AddWithValue("@User", user);
             cmd.ExecuteNonQuery();
