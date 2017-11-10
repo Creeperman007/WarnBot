@@ -52,7 +52,7 @@ namespace WarnBot
             int warns = 0;
             while (reader.Read())
             {
-                warns = Convert.ToInt32(reader["warns"]);
+                warns = Convert.ToInt32(reader["warnsCurrent"]);
             }
             conn.Close();
             return warns;
@@ -64,9 +64,14 @@ namespace WarnBot
             conn.Open();
             MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = conn;
-            cmd.CommandText = "UPDATE warnings SET warns=" + warns + " WHERE guild=" + guild + " AND user=@User";
+            cmd.CommandText = "UPDATE warnings SET warnsCurrent=" + warns + " WHERE guild=" + guild + " AND user=@User";
             cmd.Prepare();
             cmd.Parameters.AddWithValue("@User", user);
+            cmd.ExecuteNonQuery();
+            cmd.Dispose();
+            cmd.Connection = conn;
+            cmd.CommandText = "UPDATE warnings SET warnsTotal=warnsTotal+1 WHERE guild=" + guild + " AND user=@User";
+            cmd.Prepare();
             cmd.ExecuteNonQuery();
             if (conn != null)
             {
@@ -116,17 +121,14 @@ namespace WarnBot
             cmd.Prepare();
             cmd.Parameters.AddWithValue("@User", user);
             MySqlDataReader reader = cmd.ExecuteReader();
-            int warns = 0;
-            int kicks = 0;
+            int[] info = new int[3] { 0, 0, 0 };
             while (reader.Read())
             {
-                warns = Convert.ToInt32(reader["warns"]);
-                kicks = Convert.ToInt32(reader["kicks"]);
+                info[0] = Convert.ToInt32(reader["warnsCurrent"]);
+                info[1] = Convert.ToInt32(reader["kicks"]);
+                info[2] = Convert.ToInt32(reader["warnsTotal"]);
             }
             conn.Close();
-            int[] info = new int[2];
-            info[0] = warns;
-            info[1] = kicks;
             return info;
         }
         public static void Clear(string user, UInt64 guild)
@@ -136,7 +138,7 @@ namespace WarnBot
             conn.Open();
             MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = conn;
-            cmd.CommandText = "UPDATE warnings SET warns=0 WHERE guild=" + guild + " AND user=@User";
+            cmd.CommandText = "UPDATE warnings SET warnsCurrent=0 WHERE guild=" + guild + " AND user=@User";
             cmd.Prepare();
             cmd.Parameters.AddWithValue("@User", user);
             cmd.ExecuteNonQuery();

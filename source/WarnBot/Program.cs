@@ -81,7 +81,7 @@ namespace WarnBot
                                         }
                                         else
                                         {
-                                            await msg.Channel.SendMessageAsync("You can't ban without a reason!");
+                                            await msg.Channel.SendMessageAsync("You can't warn without a reason!");
                                         }
                                     }
                                     else
@@ -231,7 +231,7 @@ namespace WarnBot
                             }
                             break;
                         case "/help":
-                            await msg.Channel.SendMessageAsync("```Everyone:\n/about............................About this bot\n/example </command>...............Shows example of specified command\n/info <user>......................Shows warnings and kicks\n\nAdmins:\n/ban <user> <reason>..............Bans person\n/clear <user>.....................Clears warning count\n/kick <user> <reason>.............Kicks person\n/warn <user> <reason>...Give person warning\n\nOwner:\n/addusr <user> <K|KB>.............Adds user to Admins\n/rmusr <user> <K|KB>..............Remove user from Admins\n/updateusr <user> <K|KB> .........Updates permissions for user\n..................................K=Kick, KB=Kick and Ban```");
+                            await msg.Channel.SendMessageAsync("```Everyone:\n/about............................About this bot\n/example </command>...............Shows example of specified command\n/info <user>......................Shows warnings and kicks\n\nAdmins:\n/ban <user> <reason>..............Bans person\n/clear <user>.....................Clears warning count\n/check <user>.....................Total and current warning count + kicks\n/kick <user> <reason>.............Kicks person\n/warn <user> <reason[optional]>...Give person warning\n\nOwner:\n/addusr <user> <K|KB>.............Adds user to Admins\n/rmusr <user> <K|KB>..............Remove user from Admins\n/updateusr <user> <K|KB> .........Updates permissions for user\n..................................K=Kick, KB=Kick and Ban```");
                             break;
                         case "/addusr":
                             try
@@ -348,9 +348,39 @@ namespace WarnBot
                                 case "/example":
                                     await msg.Channel.SendMessageAsync("```/example /kick```");
                                     break;
+                                case "/check":
+                                    await msg.Channel.SendMessageAsync("```/check @" + msg.Author.ToString() + "```");
+                                    break;
                                 default:
                                     await msg.Channel.SendMessageAsync("This is not existing command, or it does not need any arguments :confused:");
                                     break;
+                            }
+                            break;
+                        case "/check":
+                            try
+                            {
+                                if (user != "")
+                                {
+                                    if ((DBConnector.PermCheck(msg.Author.Id, chnl.Guild.Id)[0] >= 1 || msg.Author.Id == chnl.Guild.Owner.Id))
+                                    {
+                                        DBConnector.Prepare(user, chnl.Guild.Id);
+                                        int[] info = DBConnector.Info(user, chnl.Guild.Id);
+                                        await msg.Author.SendMessageAsync("Admin check for " + user + " from **" + chnl.Guild.Name + "**\nCurrent warnings: " + info[0] + "\nTotal warnings: " + info[2] + "\nKicks: " + info[1]);
+                                    }
+                                    else
+                                    {
+                                        await msg.Channel.SendMessageAsync(msg.Author.Mention + " you don't have permission for this action");
+                                    }
+                                }
+                                else
+                                {
+                                    await msg.Channel.SendMessageAsync("You need to specify user when using this command!");
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                await msg.Channel.SendMessageAsync("Cannot check user!");
+                                ErrorCatch(msg, e);
                             }
                             break;
                     }
