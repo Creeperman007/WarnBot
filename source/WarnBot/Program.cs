@@ -38,27 +38,23 @@ namespace WarnBot
                     string user = "";
                     string context = "";
                     ulong usr2ulong = 0;
-                    string[] replace = { "<", ">", "@" };
+                    string[] replace = { "<", ">", "@", "!" };
                     try
                     {
-                        user = msgSplit[1];
+                        if (msgSplit[1] != "@everyone" && msgSplit[1] != "@here")
+                            user = msgSplit[1];
                         string tmp = user;
                         for (int i = 2; i < msgSplit.Length; i++)
-                        {
                             context += msgSplit[i] + " ";
-                        }
-
                         foreach (string e in replace)
-                        {
                             tmp = tmp.Replace(e, "");
-                        }
-                        usr2ulong = ulong.Parse(tmp);
-                        
+                         usr2ulong = ulong.Parse(tmp);
+
                     }
                     catch { }
-                    if (usr2ulong != 355763643964719106)
+                    var chnl = msg.Channel as SocketGuildChannel;
+                    if (usr2ulong != 355763643964719106 && usr2ulong != chnl.Guild.Owner.Id)
                     {
-                        var chnl = msg.Channel as SocketGuildChannel;
                         switch (cmd)
                         {
                             case "/warn":
@@ -73,30 +69,20 @@ namespace WarnBot
                                                 DBConnector.Prepare(user, chnl.Guild.Id);
                                                 int count = DBConnector.WarnCount(user, chnl.Guild.Id) + 1;
                                                 if (count > 3)
-                                                {
                                                     count = 1;
-                                                }
                                                 DBConnector.Warn(user, chnl.Guild.Id, count);
                                                 await msg.Channel.SendMessageAsync("Warned: " + user + "\nReason: " + context + "\nWarning " + count + "/3");
                                                 if (count == 3)
-                                                {
                                                     await msg.Channel.SendMessageAsync("User now can be kicked!");
-                                                }
                                             }
                                             else
-                                            {
                                                 await msg.Channel.SendMessageAsync("You can't warn without a reason!");
-                                            }
                                         }
                                         else
-                                        {
                                             await msg.Channel.SendMessageAsync(msg.Author.Mention + " you don't have permission for this action");
-                                        }
                                     }
                                     else
-                                    {
                                         await msg.Channel.SendMessageAsync("You need to specify user when using this command!");
-                                    }
                                 }
                                 catch (Exception e)
                                 {
@@ -122,24 +108,16 @@ namespace WarnBot
                                                     await msg.Channel.SendMessageAsync("Kicked " + user + " for \"" + context + "\"");
                                                 }
                                                 else
-                                                {
                                                     await msg.Channel.SendMessageAsync("You can't kick without a reason!");
-                                                }
                                             }
                                             else
-                                            {
                                                 await msg.Channel.SendMessageAsync("User does not have 3 warnings yet!");
-                                            }
                                         }
                                         else
-                                        {
                                             await msg.Channel.SendMessageAsync("You need to specify user when using this command!");
-                                        }
                                     }
                                     else
-                                    {
                                         await msg.Channel.SendMessageAsync(msg.Author.Mention + " you don't have permission for this action");
-                                    }
                                 }
                                 catch (Exception e)
                                 {
@@ -164,24 +142,16 @@ namespace WarnBot
                                                     await msg.Channel.SendMessageAsync("Banned " + user + " for \"" + context + "\"");
                                                 }
                                                 else
-                                                {
                                                     await msg.Channel.SendMessageAsync("User does not have number of kicks divisible by 5!");
-                                                }
                                             }
                                             else
-                                            {
                                                 await msg.Channel.SendMessageAsync("You can't ban without a reason!");
-                                            }
                                         }
                                         else
-                                        {
                                             await msg.Channel.SendMessageAsync(msg.Author.Mention + " you don't have permission for this action");
-                                        }
                                     }
                                     else
-                                    {
                                         await msg.Channel.SendMessageAsync("You need to specify user when using this command!");
-                                    }
                                 }
                                 catch (Exception e)
                                 {
@@ -200,14 +170,10 @@ namespace WarnBot
                                             await msg.Channel.SendMessageAsync("Cleared record for " + user);
                                         }
                                         else
-                                        {
                                             await msg.Channel.SendMessageAsync(msg.Author.Mention + " you don't have permission for this action");
-                                        }
                                     }
                                     else
-                                    {
                                         await msg.Channel.SendMessageAsync("You need to specify user when using this command!");
-                                    }
                                 }
                                 catch (Exception e)
                                 {
@@ -225,9 +191,7 @@ namespace WarnBot
                                         await msg.Channel.SendMessageAsync("Warnings: " + info[0] + "\nKicks: " + info[1]);
                                     }
                                     else
-                                    {
                                         await msg.Channel.SendMessageAsync("You need to specify user when using this command!");
-                                    }
                                 }
                                 catch (Exception e)
                                 {
@@ -249,14 +213,10 @@ namespace WarnBot
                                             await msg.Channel.SendMessageAsync("Added user to Admins.");
                                         }
                                         else
-                                        {
                                             await msg.Channel.SendMessageAsync(msg.Author.Mention + " you don't have permission for this action");
-                                        }
                                     }
                                     else
-                                    {
                                         await msg.Channel.SendMessageAsync("You need to specify user when using this command!");
-                                    }
                                 }
                                 catch (Exception e)
                                 {
@@ -275,14 +235,10 @@ namespace WarnBot
                                             await msg.Channel.SendMessageAsync("Removed user from Admins.");
                                         }
                                         else
-                                        {
                                             await msg.Channel.SendMessageAsync(msg.Author.Mention + " you don't have permission for this action");
-                                        }
                                     }
                                     else
-                                    {
                                         await msg.Channel.SendMessageAsync("You need to specify user when using this command!");
-                                    }
                                 }
                                 catch (Exception e)
                                 {
@@ -301,14 +257,10 @@ namespace WarnBot
                                             await msg.Channel.SendMessageAsync("Updated permissions for user.");
                                         }
                                         else
-                                        {
                                             await msg.Channel.SendMessageAsync(msg.Author.Mention + " you don't have permission for this action");
-                                        }
                                     }
                                     else
-                                    {
                                         await msg.Channel.SendMessageAsync("You need to specify user when using this command!");
-                                    }
                                 }
                                 catch (Exception e)
                                 {
@@ -373,14 +325,10 @@ namespace WarnBot
                                             await msg.Author.SendMessageAsync("Admin check for " + user + " from **" + chnl.Guild.Name + "**\nCurrent warnings: " + info[0] + "\nTotal warnings: " + info[2] + "\nKicks: " + info[1]);
                                         }
                                         else
-                                        {
                                             await msg.Channel.SendMessageAsync(msg.Author.Mention + " you don't have permission for this action");
-                                        }
                                     }
                                     else
-                                    {
                                         await msg.Channel.SendMessageAsync("You need to specify user when using this command!");
-                                    }
                                 }
                                 catch (Exception e)
                                 {
@@ -392,7 +340,7 @@ namespace WarnBot
                     }
                     else
                     {
-                        await msg.Channel.SendMessageAsync(msg.Author.Mention + " is it good idea to do this to me?");
+                        await msg.Channel.SendMessageAsync(msg.Author.Mention + " is it good idea to do this?");
                     }
                 }
             }
@@ -411,7 +359,7 @@ namespace WarnBot
         {
             Console.WriteLine(e);
             await msg.Channel.SendMessageAsync("Internal error occured!");
-            await msg.Author.SendMessageAsync("Go to <https://github.com/Creeperman007/WarnBot/issues> open new issue and paste text below");
+            await msg.Author.SendMessageAsync("Go to <https://github.com/Creeperman007/WarnBot/issues> open new issue and paste text below and how you got this error");
             await msg.Author.SendMessageAsync("```" + e + "```");
         }
     }
