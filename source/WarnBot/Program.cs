@@ -53,7 +53,7 @@ namespace WarnBot
                     }
                     catch { }
                     var chnl = msg.Channel as SocketGuildChannel;
-                    if (usr2ulong != 355763643964719106 && usr2ulong != chnl.Guild.Owner.Id)
+                    if ((usr2ulong != 355763643964719106 && usr2ulong != chnl.Guild.Owner.Id))
                     {
                         switch (cmd)
                         {
@@ -200,7 +200,7 @@ namespace WarnBot
                                 }
                                 break;
                             case "/help":
-                                await msg.Channel.SendMessageAsync("```Everyone:\n/about............................About this bot\n/example </command>...............Shows example of specified command\n/info <user>......................Shows warnings and kicks\n\nAdmins:\n/ban <user> <reason>..............Bans person\n/clear <user>.....................Clears warning count\n/check <user>.....................Total and current warning count + kicks\n/kick <user> <reason>.............Kicks person\n/warn <user> <reason[optional]>...Give person warning\n\nOwner:\n/addusr <user> <K|KB>.............Adds user to Admins\n/rmusr <user> <K|KB>..............Remove user from Admins\n/updateusr <user> <K|KB> .........Updates permissions for user\n..................................K=Kick, KB=Kick and Ban```");
+                                await msg.Channel.SendMessageAsync("```Everyone:\n/about............................About this bot\n/example </command>...............Shows example of specified command\n/info <user>......................Shows warnings and kicks\n\nAdmins:\n/ban <user> <reason>..............Bans person\n/clear <user>.....................Clears warning count\n/check <user>.....................Total and current warning count + kicks\n/kick <user> <reason>.............Kicks person\n/warn <user> <reason>.............Give person warning\n\nOwner:\n/addusr <user> <K|KB>.............Adds user to Admins\n/rmusr <user> <K|KB>..............Remove user from Admins\n/updateusr <user> <K|KB> .........Updates permissions for user\n..................................K=Kick, KB=Kick and Ban```");
                                 break;
                             case "/addusr":
                                 try
@@ -338,7 +338,7 @@ namespace WarnBot
                                 break;
                         }
                     }
-                    else
+                    else if (cmd.Contains("/"))
                     {
                         await msg.Channel.SendMessageAsync(msg.Author.Mention + " is it good idea to do this?");
                     }
