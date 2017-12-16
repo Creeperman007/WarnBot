@@ -53,7 +53,7 @@ namespace WarnBot
                     }
                     catch { }
                     var chnl = msg.Channel as SocketGuildChannel;
-                    if ((usr2ulong != 355763643964719106 && usr2ulong != chnl.Guild.Owner.Id))
+                    if (usr2ulong != 355763643964719106 && usr2ulong != chnl.Guild.Owner.Id)
                     {
                         switch (cmd)
                         {
@@ -338,7 +338,7 @@ namespace WarnBot
                                 break;
                         }
                     }
-                    else if (cmd.Contains("/"))
+                    else if (cmd.Contains("/") && !cmd.Contains("://"))
                     {
                         await msg.Channel.SendMessageAsync(msg.Author.Mention + " is it good idea to do this?");
                     }
