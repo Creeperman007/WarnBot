@@ -14,7 +14,7 @@ namespace WarnBot
         private static string pass = "warnbot";
         private static string name = "warnbotdb";
         private static string cs = @"server=" + host + ";userid=" + username + ";password=" + pass + ";database=" + name;
-        public static void Prepare(string user, UInt64 guild)
+        public static void Prepare(UInt64 user, UInt64 guild)
         {
             MySqlConnection conn = null;
             conn = new MySqlConnection(cs);
@@ -38,7 +38,7 @@ namespace WarnBot
             conn.Close();
 
         }
-        public static int WarnCount(string user, UInt64 guild)
+        public static int WarnCount(UInt64 user, UInt64 guild)
         {
             MySqlConnection conn = null;
             conn = new MySqlConnection(cs);
@@ -57,7 +57,7 @@ namespace WarnBot
             conn.Close();
             return warns;
         }
-        public static void Warn(string user, UInt64 guild, int warns)
+        public static void Warn(UInt64 user, UInt64 guild, int warns)
         {
             MySqlConnection conn = null;
             conn = new MySqlConnection(cs);
@@ -78,7 +78,7 @@ namespace WarnBot
                 conn.Close();
             }
         }
-        public static void Kick(string user, UInt64 guild, string reason)
+        public static void Kick(UInt64 user, UInt64 guild, string reason)
         {
             MySqlConnection conn = null;
             conn = new MySqlConnection(cs);
@@ -94,7 +94,7 @@ namespace WarnBot
                 conn.Close();
             }
         }
-        public static void Ban(string user, UInt64 guild, string reason)
+        public static void Ban(UInt64 user, UInt64 guild, string reason)
         {
             MySqlConnection conn = null;
             conn = new MySqlConnection(cs);
@@ -110,7 +110,7 @@ namespace WarnBot
                 conn.Close();
             }
         }
-        public static int[] Info(string user, UInt64 guild)
+        public static int[] Info(UInt64 user, UInt64 guild)
         {
             MySqlConnection conn = null;
             conn = new MySqlConnection(cs);
@@ -131,7 +131,7 @@ namespace WarnBot
             conn.Close();
             return info;
         }
-        public static void Clear(string user, UInt64 guild)
+        public static void Clear(UInt64 user, UInt64 guild)
         {
             MySqlConnection conn = null;
             conn = new MySqlConnection(cs);
