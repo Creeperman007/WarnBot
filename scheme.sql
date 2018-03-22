@@ -10,7 +10,7 @@ CREATE TABLE `permissions` (
 CREATE TABLE `warnings` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
  `guild` bigint(20) NOT NULL,
- `user` text CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+ `user` bigint(20) NOT NULL,
  `warnsCurrent` int(11) NOT NULL DEFAULT '0',
  `warnsTotal` int(11) NOT NULL DEFAULT '0',
  `kicks` int(11) NOT NULL DEFAULT '0',
