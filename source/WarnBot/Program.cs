@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
+using DSharpPlus.CommandsNext.Exceptions;
 using DSharpPlus.EventArgs;
 
 namespace WarnBot
@@ -40,6 +41,8 @@ namespace WarnBot
                 StringPrefix = "/"
             });
 
+            commands.CommandExecuted += Commands_CommandExecuted;
+
             commands.RegisterCommands<Commands>();
 
             discord.Ready += Client_Ready;
@@ -50,6 +53,12 @@ namespace WarnBot
         private static Task Client_Ready(ReadyEventArgs e)
         {
             e.Client.DebugLogger.LogMessage(LogLevel.Info, "WarnBot", "Client is ready to operate.", DateTime.Now);
+            return Task.CompletedTask;
+        }
+
+        private static Task Commands_CommandExecuted(CommandExecutionEventArgs e)
+        {
+            e.Context.Client.DebugLogger.LogMessage(LogLevel.Info, "WarnBot", $"{e.Context.User.Username} successfully executed '{e.Command.QualifiedName}'", DateTime.Now);
             return Task.CompletedTask;
         }
     }
