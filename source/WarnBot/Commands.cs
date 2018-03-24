@@ -143,7 +143,7 @@ namespace WarnBot
             }
         }
 
-        [Command("addusr"), Description("Adds user to Admins."), RequirePermissions(Permissions.Administrator)]
+        [Command("addusr"), Description("Adds user to Admins."), RequirePermissions(Permissions.Administrator), Aliases("adduser")]
         public async Task AddUsr(CommandContext ctx, [Description("Mention of user.")] DiscordUser usr, [Description("K - Kick or KB - Kick and Ban.")] string perms)
         {
             try
@@ -162,7 +162,7 @@ namespace WarnBot
             }
         }
 
-        [Command("rmusr"), Description("Removes user from Admins."), RequirePermissions(Permissions.Administrator)]
+        [Command("rmusr"), Description("Removes user from Admins."), RequirePermissions(Permissions.Administrator), Aliases("removeuser")]
         public async Task RmUsr(CommandContext ctx, [Description("Mention of user.")] DiscordUser usr)
         {
             try
@@ -181,7 +181,7 @@ namespace WarnBot
             }
         }
 
-        [Command("updateusr"), Description("Updates permissions."), RequirePermissions(Permissions.Administrator)]
+        [Command("updateusr"), Description("Updates permissions."), RequirePermissions(Permissions.Administrator), Aliases("updateuser")]
         public async Task UpdateUsr(CommandContext ctx, [Description("Mention of user.")] DiscordUser usr, [Description("K - Kick or KB - Kick and Ban.")] string perms)
         {
             try
