@@ -18,9 +18,9 @@ namespace WarnBot
         {
             try
             {
-                if (!usr.IsCurrent || (usr.Id != ctx.Guild.Owner.Id))
+                if (!usr.IsCurrent && (usr.Id != ctx.Guild.Owner.Id))
                 {
-                    if ((DBConnector.PermCheck(ctx.Member.Id, ctx.Guild.Id)[0] > 1 || ctx.Member.IsOwner) && usr.Id != ctx.Member.Id)
+                    if ((DBConnector.PermCheck(ctx.Member.Id, ctx.Guild.Id)[0] >= 1 || ctx.Member.IsOwner) && usr.Id != ctx.Member.Id)
                     {
                         DBConnector.Prepare(usr.Id, ctx.Guild.Id);
                         int count = DBConnector.WarnCount(usr.Id, ctx.Guild.Id) + 1;
@@ -46,9 +46,9 @@ namespace WarnBot
         {
             try
             {
-                if (!usr.IsCurrent || (usr.Id != ctx.Guild.Owner.Id))
+                if (!usr.IsCurrent && (usr.Id != ctx.Guild.Owner.Id))
                 {
-                    if ((DBConnector.PermCheck(ctx.Member.Id, ctx.Guild.Id)[0] > 1 || ctx.Member.IsOwner) && usr.Id != ctx.Member.Id)
+                    if ((DBConnector.PermCheck(ctx.Member.Id, ctx.Guild.Id)[0] >= 1 || ctx.Member.IsOwner) && usr.Id != ctx.Member.Id)
                     {
                         DBConnector.Prepare(usr.Id, ctx.Guild.Id);
                         int info = DBConnector.Info(usr.Id, ctx.Guild.Id)[0];
@@ -76,9 +76,9 @@ namespace WarnBot
         {
             try
             {
-                if (!usr.IsCurrent || (usr.Id != ctx.Guild.Owner.Id))
+                if (!usr.IsCurrent && (usr.Id != ctx.Guild.Owner.Id))
                 {
-                    if ((DBConnector.PermCheck(ctx.Member.Id, ctx.Guild.Id)[0] > 1 || ctx.Member.IsOwner) && usr.Id != ctx.Member.Id)
+                    if ((DBConnector.PermCheck(ctx.Member.Id, ctx.Guild.Id)[0] >= 1 || ctx.Member.IsOwner) && usr.Id != ctx.Member.Id)
                     {
                         DBConnector.Prepare(usr.Id, ctx.Guild.Id);
                         int kick = DBConnector.Info(usr.Id, ctx.Guild.Id)[1];
@@ -106,9 +106,9 @@ namespace WarnBot
         {
             try
             {
-                if (!usr.IsCurrent || (usr.Id != ctx.Guild.Owner.Id))
+                if (!usr.IsCurrent && (usr.Id != ctx.Guild.Owner.Id))
                 {
-                    if ((DBConnector.PermCheck(ctx.Member.Id, ctx.Guild.Id)[0] > 1 || ctx.Member.IsOwner) && usr.Id != ctx.Member.Id)
+                    if ((DBConnector.PermCheck(ctx.Member.Id, ctx.Guild.Id)[0] >= 1 || ctx.Member.IsOwner) && usr.Id != ctx.Member.Id)
                     {
                         DBConnector.Clear(usr.Id, ctx.Guild.Id);
                         await ctx.RespondAsync("Cleared record for " + usr.Mention);
@@ -128,7 +128,7 @@ namespace WarnBot
         {
             try
             {
-                if (!usr.IsCurrent || (usr.Id != ctx.Guild.Owner.Id))
+                if (!usr.IsCurrent && (usr.Id != ctx.Guild.Owner.Id))
                 {
                     DBConnector.Prepare(usr.Id, ctx.Guild.Id);
                     int[] info = DBConnector.Info(usr.Id, ctx.Guild.Id);
@@ -148,7 +148,7 @@ namespace WarnBot
         {
             try
             {
-                if (!usr.IsCurrent || (usr.Id != ctx.Guild.Owner.Id))
+                if (!usr.IsCurrent && (usr.Id != ctx.Guild.Owner.Id))
                 {
                     DBConnector.AddUsr(usr.Id, ctx.Guild.Id, perms);
                     await ctx.RespondAsync("Added user to Admins.");
@@ -167,7 +167,7 @@ namespace WarnBot
         {
             try
             {
-                if (!usr.IsCurrent || (usr.Id != ctx.Guild.Owner.Id))
+                if (!usr.IsCurrent && (usr.Id != ctx.Guild.Owner.Id))
                 {
                     DBConnector.RmUsr(usr.Id, ctx.Guild.Id);
                     await ctx.RespondAsync("Removed user from Admins.");
@@ -186,7 +186,7 @@ namespace WarnBot
         {
             try
             {
-                if (!usr.IsCurrent || (usr.Id != ctx.Guild.Owner.Id))
+                if (!usr.IsCurrent && (usr.Id != ctx.Guild.Owner.Id))
                 {
                     DBConnector.UpdateUsr(usr.Id, ctx.Guild.Id, perms);
                     await ctx.RespondAsync("Updated permissions for user.");
@@ -217,9 +217,9 @@ namespace WarnBot
         {
             try
             {
-                if (!usr.IsCurrent || (usr.Id != ctx.Guild.Owner.Id))
+                if (!usr.IsCurrent && (usr.Id != ctx.Guild.Owner.Id))
                 {
-                    if ((DBConnector.PermCheck(ctx.Member.Id, ctx.Guild.Id)[0] > 1 || ctx.Member.IsOwner) && usr.Id != ctx.Member.Id)
+                    if ((DBConnector.PermCheck(ctx.Member.Id, ctx.Guild.Id)[0] >= 1 || ctx.Member.IsOwner) && usr.Id != ctx.Member.Id)
                     {
                         DBConnector.Prepare(usr.Id, ctx.Guild.Id);
                         int[] info = DBConnector.Info(usr.Id, ctx.Guild.Id);
