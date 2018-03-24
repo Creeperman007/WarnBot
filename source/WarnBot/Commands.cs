@@ -143,18 +143,15 @@ namespace WarnBot
             }
         }
 
-        [Command("addusr"), Description("Adds user to Admins.")]
+        [Command("addusr"), Description("Adds user to Admins."), RequirePermissions(Permissions.Administrator)]
         public async Task AddUsr(CommandContext ctx, [Description("Mention of user.")] DiscordUser usr, [Description("K - Kick or KB - Kick and Ban.")] string perms)
         {
             try
             {
                 if (!usr.IsCurrent || (usr.Id != ctx.Guild.Owner.Id))
                 {
-                    if (ctx.Member.IsOwner)
-                    {
-                        DBConnector.AddUsr(usr.Id, ctx.Guild.Id, perms);
-                        await ctx.RespondAsync("Added user to Admins.");
-                    }
+                    DBConnector.AddUsr(usr.Id, ctx.Guild.Id, perms);
+                    await ctx.RespondAsync("Added user to Admins.");
                 }
                 else
                     await ctx.RespondAsync("Whoah, you can't use the command on this person!");
@@ -165,18 +162,15 @@ namespace WarnBot
             }
         }
 
-        [Command("rmusr"), Description("Removes user from Admins.")]
+        [Command("rmusr"), Description("Removes user from Admins."), RequirePermissions(Permissions.Administrator)]
         public async Task RmUsr(CommandContext ctx, [Description("Mention of user.")] DiscordUser usr)
         {
             try
             {
                 if (!usr.IsCurrent || (usr.Id != ctx.Guild.Owner.Id))
                 {
-                    if (ctx.Member.IsOwner)
-                    {
-                        DBConnector.RmUsr(usr.Id, ctx.Guild.Id);
-                        await ctx.RespondAsync("Removed user from Admins.");
-                    }
+                    DBConnector.RmUsr(usr.Id, ctx.Guild.Id);
+                    await ctx.RespondAsync("Removed user from Admins.");
                 }
                 else
                     await ctx.RespondAsync("Whoah, you can't use the command on this person!");
@@ -187,18 +181,15 @@ namespace WarnBot
             }
         }
 
-        [Command("updateusr"), Description("Updates permissions.")]
+        [Command("updateusr"), Description("Updates permissions."), RequirePermissions(Permissions.Administrator)]
         public async Task UpdateUsr(CommandContext ctx, [Description("Mention of user.")] DiscordUser usr, [Description("K - Kick or KB - Kick and Ban.")] string perms)
         {
             try
             {
                 if (!usr.IsCurrent || (usr.Id != ctx.Guild.Owner.Id))
                 {
-                    if (ctx.Member.IsOwner)
-                    {
-                        DBConnector.UpdateUsr(usr.Id, ctx.Guild.Id, perms);
-                        await ctx.RespondAsync("Updated permissions for user.");
-                    }
+                    DBConnector.UpdateUsr(usr.Id, ctx.Guild.Id, perms);
+                    await ctx.RespondAsync("Updated permissions for user.");
                 }
                 else
                     await ctx.RespondAsync("Whoah, you can't use the command on this person!");
