@@ -235,7 +235,7 @@ namespace WarnBot
             }
         }
 
-        [Command("example"), Description("Shows example use of specified command.")]
+        [Command("example"), Description("Shows example usage of specified command.")]
         public async Task Example(CommandContext ctx, [Description("Command to show example of (without prefix)")] string command)
         {
             switch (command)
