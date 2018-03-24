@@ -221,6 +221,29 @@ namespace WarnBot
             await ctx.RespondAsync(embed: eb);
         }
 
+        [Command("check"), Hidden]
+        public async Task Check(CommandContext ctx, DiscordUser usr)
+        {
+            try
+            {
+                if (!usr.IsCurrent || (usr.Id != ctx.Guild.Owner.Id))
+                {
+                    if ((DBConnector.PermCheck(ctx.Member.Id, ctx.Guild.Id)[0] > 1 || ctx.Member.IsOwner) && usr.Id != ctx.Member.Id)
+                    {
+                        DBConnector.Prepare(usr.Id, ctx.Guild.Id);
+                        int[] info = DBConnector.Info(usr.Id, ctx.Guild.Id);
+                        await ctx.Member.SendMessageAsync(String.Format("Admin check for {0}#{1} from **{2}**\nCurrent warnings: {3}\nTotal warning: {4}\nKicks: {5}", usr.Username, usr.Discriminator, ctx.Guild.Name, info[0], info[2], info[1]));
+                    }
+                }
+                else
+                    await ctx.RespondAsync("Whoah, you can't use the command on this person!");
+            }
+            catch (Exception e)
+            {
+                ErrorCatch(ctx, e);
+            }
+        }
+
         private async void ErrorCatch(CommandContext ctx, Exception e)
         {
             await ctx.Member.SendMessageAsync("Internal error occured!");
