@@ -244,6 +244,47 @@ namespace WarnBot
             }
         }
 
+        [Command("example"), Description("Shows example use of specified command.")]
+        public async Task Example(CommandContext ctx, [Description("Command to show example of (without prefix)")] string command)
+        {
+            switch (command)
+            {
+                case "ban":
+                    await ctx.RespondAsync(String.Format("```/ban @{0}#{1} Spamming```", ctx.Member.Username, ctx.Member.Discriminator));
+                    break;
+                case "kick":
+                    await ctx.RespondAsync(String.Format("```/kick @{0}#{1} Spamming```", ctx.Member.Username, ctx.Member.Discriminator));
+                    break;
+                case "warn":
+                    await ctx.RespondAsync(String.Format("```/warn @{0}#{1} Spamming```", ctx.Member.Username, ctx.Member.Discriminator));
+                    break;
+                case "clear":
+                    await ctx.RespondAsync(String.Format("```/clear @{0}#{1}```", ctx.Member.Username, ctx.Member.Discriminator));
+                    break;
+                case "info":
+                    await ctx.RespondAsync(String.Format("```/info @{0}#{1}```", ctx.Member.Username, ctx.Member.Discriminator));
+                    break;
+                case "addusr":
+                    await ctx.RespondAsync(String.Format("```/addusr @{0}#{1} K``` /\\ for kick only\nOR\n```/addusr @{0}#{1} KB``` /\\ for kick and ban", ctx.Member.Username, ctx.Member.Discriminator));
+                    break;
+                case "rmusr":
+                    await ctx.RespondAsync(String.Format("```/rmusr @{0}#{1}```", ctx.Member.Username, ctx.Member.Discriminator));
+                    break;
+                case "updateusr":
+                    await ctx.RespondAsync(String.Format("```/updateusr @{0}#{1} K``` /\\ for kick only\nOR\n```/updateusr @{0}#{1} KB``` /\\ for kick and ban", ctx.Member.Username, ctx.Member.Discriminator));
+                    break;
+                case "example":
+                    await ctx.RespondAsync(String.Format("```/example kick```", ctx.Member.Username, ctx.Member.Discriminator));
+                    break;
+                case "check":
+                    await ctx.RespondAsync(String.Format("```/check @{0}#{1}```", ctx.Member.Username, ctx.Member.Discriminator));
+                    break;
+                default:
+                    await ctx.RespondAsync("This is not existing command, or it does not need any arguments :confused:");
+                    break;
+            }
+        }
+
         private async void ErrorCatch(CommandContext ctx, Exception e)
         {
             await ctx.Member.SendMessageAsync("Internal error occured!");
