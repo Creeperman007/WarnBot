@@ -20,7 +20,7 @@ namespace WarnBot
             {
                 if (!usr.IsCurrent && (usr.Id != ctx.Guild.Owner.Id))
                 {
-                    if ((DBConnector.PermCheck(ctx.Member.Id, ctx.Guild.Id)[0] >= 1 || ctx.Member.IsOwner) && usr.Id != ctx.Member.Id)
+                    if ((DBConnector.PermCheck(ctx.Member.Id, ctx.Guild.Id)[0] >= 1 || ctx.Member.IsOwner || IsAdministrator(ctx.Member.Roles)) && usr.Id != ctx.Member.Id)
                     {
                         DBConnector.Prepare(usr.Id, ctx.Guild.Id);
                         int count = DBConnector.WarnCount(usr.Id, ctx.Guild.Id) + 1;
@@ -48,7 +48,7 @@ namespace WarnBot
             {
                 if (!usr.IsCurrent && (usr.Id != ctx.Guild.Owner.Id))
                 {
-                    if ((DBConnector.PermCheck(ctx.Member.Id, ctx.Guild.Id)[0] >= 1 || ctx.Member.IsOwner) && usr.Id != ctx.Member.Id)
+                    if ((DBConnector.PermCheck(ctx.Member.Id, ctx.Guild.Id)[0] >= 1 || ctx.Member.IsOwner || IsAdministrator(ctx.Member.Roles)) && usr.Id != ctx.Member.Id)
                     {
                         DBConnector.Prepare(usr.Id, ctx.Guild.Id);
                         int info = DBConnector.Info(usr.Id, ctx.Guild.Id)[0];
@@ -78,7 +78,7 @@ namespace WarnBot
             {
                 if (!usr.IsCurrent && (usr.Id != ctx.Guild.Owner.Id))
                 {
-                    if ((DBConnector.PermCheck(ctx.Member.Id, ctx.Guild.Id)[0] >= 1 || ctx.Member.IsOwner) && usr.Id != ctx.Member.Id)
+                    if ((DBConnector.PermCheck(ctx.Member.Id, ctx.Guild.Id)[0] >= 1 || ctx.Member.IsOwner || IsAdministrator(ctx.Member.Roles)) && usr.Id != ctx.Member.Id)
                     {
                         DBConnector.Prepare(usr.Id, ctx.Guild.Id);
                         int kick = DBConnector.Info(usr.Id, ctx.Guild.Id)[1];
@@ -108,7 +108,7 @@ namespace WarnBot
             {
                 if (!usr.IsCurrent && (usr.Id != ctx.Guild.Owner.Id))
                 {
-                    if ((DBConnector.PermCheck(ctx.Member.Id, ctx.Guild.Id)[0] >= 1 || ctx.Member.IsOwner) && usr.Id != ctx.Member.Id)
+                    if ((DBConnector.PermCheck(ctx.Member.Id, ctx.Guild.Id)[0] >= 1 || ctx.Member.IsOwner || IsAdministrator(ctx.Member.Roles)) && usr.Id != ctx.Member.Id)
                     {
                         DBConnector.Clear(usr.Id, ctx.Guild.Id);
                         await ctx.RespondAsync("Cleared record for " + usr.Mention);
@@ -219,7 +219,7 @@ namespace WarnBot
             {
                 if (!usr.IsCurrent && (usr.Id != ctx.Guild.Owner.Id))
                 {
-                    if ((DBConnector.PermCheck(ctx.Member.Id, ctx.Guild.Id)[0] >= 1 || ctx.Member.IsOwner) && usr.Id != ctx.Member.Id)
+                    if ((DBConnector.PermCheck(ctx.Member.Id, ctx.Guild.Id)[0] >= 1 || ctx.Member.IsOwner || IsAdministrator(ctx.Member.Roles)) && usr.Id != ctx.Member.Id)
                     {
                         DBConnector.Prepare(usr.Id, ctx.Guild.Id);
                         int[] info = DBConnector.Info(usr.Id, ctx.Guild.Id);
@@ -281,6 +281,16 @@ namespace WarnBot
             await ctx.Member.SendMessageAsync("Internal error occured!");
             await ctx.Member.SendMessageAsync("Go to <https://github.com/Creeperman007/WarnBot/issues> open new issue and paste text below and how you got this error");
             await ctx.Member.SendMessageAsync("```" + e + "```");
+        }
+
+        private bool IsAdministrator(IEnumerable<DiscordRole> roles)
+        {
+            foreach (DiscordRole role in roles)
+            {
+                if (role.CheckPermission(Permissions.Administrator) == PermissionLevel.Allowed)
+                    return true;
+            }
+            return false;
         }
     }
 }
